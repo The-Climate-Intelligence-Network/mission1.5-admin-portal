@@ -19,7 +19,7 @@ const mockUsers = [
     id: "1",
     name: "John Doe",
     email: "john@greentech.com",
-    role: "org_admin",
+    role: "admin",
     organization: "GreenTech Solutions",
     joinedDate: "2024-03-15",
     lastActive: "2025-01-14",
@@ -30,7 +30,7 @@ const mockUsers = [
     id: "2",
     name: "Jane Smith", 
     email: "jane@ecoalliance.org",
-    role: "org_admin",
+    role: "admin",
     organization: "Eco Alliance",
     joinedDate: "2024-12-20",
     lastActive: "2025-01-13",
@@ -41,7 +41,7 @@ const mockUsers = [
     id: "3",
     name: "CIN Administrator",
     email: "cinadmin1@climateintel.org", 
-    role: "cin_admin",
+    role: "admin",
     organization: "The Climate Intelligence Network",
     joinedDate: "2024-01-01",
     lastActive: "2025-01-14",
@@ -52,7 +52,7 @@ const mockUsers = [
     id: "4",
     name: "Bob Johnson",
     email: "bob@climatewarriors.net",
-    role: "org_admin", 
+    role: "admin", 
     organization: "Climate Warriors",
     joinedDate: "2024-02-10",
     lastActive: "2025-01-12",
@@ -63,7 +63,7 @@ const mockUsers = [
     id: "5",
     name: "Alice Cooper",
     email: "alice@individual.com",
-    role: "player",
+    role: "agent",
     organization: null,
     joinedDate: "2024-11-05",
     lastActive: "2025-01-14", 
@@ -74,7 +74,7 @@ const mockUsers = [
     id: "6",
     name: "Mike Wilson",
     email: "mike@greentech.com",
-    role: "player",
+    role: "agent",
     organization: "GreenTech Solutions", 
     joinedDate: "2024-04-20",
     lastActive: "2025-01-11",
@@ -85,11 +85,11 @@ const mockUsers = [
 
 const getRoleColor = (role: string) => {
   switch (role) {
-    case 'cin_admin':
+    case 'admin':
       return 'bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-300';
-    case 'org_admin':
+    case 'admin':
       return 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300';
-    case 'player':
+    case 'agent':
       return 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300';
     default:
       return 'bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-300';
@@ -111,11 +111,11 @@ const getStatusColor = (status: string) => {
 
 const getRoleIcon = (role: string) => {
   switch (role) {
-    case 'cin_admin':
+    case 'admin':
       return <Shield className="h-4 w-4" />;
-    case 'org_admin':
+    case 'admin':
       return <Building className="h-4 w-4" />;
-    case 'player':
+    case 'agent':
       return <User className="h-4 w-4" />;
     default:
       return <User className="h-4 w-4" />;
@@ -222,7 +222,7 @@ export default function ViewAllUsersPage() {
                   <Mail className="h-4 w-4 mr-2" />
                   Send Message
                 </Button>
-                {user.role !== 'cin_admin' && (
+                {user.role !== 'admin' && (
                   <Button variant="outline" size="sm" className="text-red-600 hover:text-red-700">
                     <UserX className="h-4 w-4 mr-2" />
                     Suspend
@@ -252,7 +252,7 @@ export default function ViewAllUsersPage() {
           <CardContent className="pt-6">
             <div className="text-center">
               <div className="text-2xl font-bold text-gray-900 dark:text-white">
-                {mockUsers.filter(u => u.role === 'cin_admin').length}
+                {mockUsers.filter(u => u.role === 'admin').length}
               </div>
               <div className="text-sm text-gray-500 dark:text-gray-400">
                 CIN Admins
@@ -264,7 +264,7 @@ export default function ViewAllUsersPage() {
           <CardContent className="pt-6">
             <div className="text-center">
               <div className="text-2xl font-bold text-gray-900 dark:text-white">
-                {mockUsers.filter(u => u.role === 'org_admin').length}
+                {mockUsers.filter(u => u.role === 'admin').length}
               </div>
               <div className="text-sm text-gray-500 dark:text-gray-400">
                 Org Admins
@@ -276,10 +276,10 @@ export default function ViewAllUsersPage() {
           <CardContent className="pt-6">
             <div className="text-center">
               <div className="text-2xl font-bold text-gray-900 dark:text-white">
-                {mockUsers.filter(u => u.role === 'player').length}
+                {mockUsers.filter(u => u.role === 'agent').length}
               </div>
               <div className="text-sm text-gray-500 dark:text-gray-400">
-                Players
+                Agents
               </div>
             </div>
           </CardContent>
