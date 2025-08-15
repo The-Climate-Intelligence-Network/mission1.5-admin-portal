@@ -14,6 +14,14 @@ export const signUpAction = async (formData: FormData) => {
   const phone = formData.get("phone")?.toString();
   const address = formData.get("address")?.toString();
   const confirmPassword = formData.get("confirmPassword")?.toString();
+
+  // Get selected privileges from checkboxes
+  const selectedPrivileges = formData.getAll("privileges");
+  const permissionTypes =
+    selectedPrivileges.length > 0
+      ? selectedPrivileges.join(",")
+      : "mobilizing_partners"; // Default to mobilizing_partners if nothing selected
+
   const supabase = await createClient();
   const origin = (await headers()).get("origin");
 
@@ -40,20 +48,19 @@ export const signUpAction = async (formData: FormData) => {
   }
 
   // This web app only handles organization signups - users sign up via mobile app
-  const initialRole = "org_admin_pending";
+  // New organizations get admin role with pending privileges by default
   const { error } = await supabase.auth.signUp({
     email,
     password,
     options: {
       emailRedirectTo: `${origin}/auth/callback`,
       data: {
-        name: adminName,
+        user_type: "admin",
         full_name: adminName,
         phone,
         address,
         organization_name: organizationName,
-        user_role: initialRole,
-        email,
+        permission_types: permissionTypes, // Use selected privileges
       },
     },
   });
@@ -87,33 +94,9 @@ export const signInAction = async (formData: FormData) => {
     return encodedRedirect("error", "/sign-in", error.message);
   }
 
-  // Role-based redirection
-  let userRole: string | undefined;
-  if (session?.access_token) {
-    try {
-      const jwt: any = jwtDecode(session.access_token);
-      userRole = jwt.user_role;
-    } catch (e) {
-      // If decoding fails, fallback to generic protected route
-      return redirect("/dashboard");
-    }
-  }
-
-  // Redirect based on role
-  switch (userRole) {
-    case "org_admin_active":
-      return redirect("/organization-dashboard");
-    case "org_admin_pending":
-      return redirect("/pending-approval");
-    case "org_admin_inactive":
-      return redirect("/application-rejected");
-    case "cin_admin":
-      return redirect("/cin-admin-dashboard");
-    case "super_admin":
-      return redirect("/super-admin-dashboard");
-    default:
-      return redirect("/");
-  }
+  // Redirect based on role - All authenticated users go to common dashboard
+  // In the new system, all admins use the unified dashboard
+  return redirect("/dashboard");
 };
 
 export const forgotPasswordAction = async (formData: FormData) => {
