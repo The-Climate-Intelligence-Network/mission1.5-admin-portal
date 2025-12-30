@@ -528,6 +528,133 @@ export type Database = {
           },
         ]
       }
+      reward_redemptions: {
+        Row: {
+          created_at: string | null
+          fulfilled_at: string | null
+          id: string
+          metadata: Json | null
+          points_spent: number
+          redemption_notes: string | null
+          review_notes: string | null
+          reviewed_at: string | null
+          reviewed_by: string | null
+          reward_id: string
+          status: string
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          fulfilled_at?: string | null
+          id?: string
+          metadata?: Json | null
+          points_spent: number
+          redemption_notes?: string | null
+          review_notes?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          reward_id: string
+          status?: string
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          fulfilled_at?: string | null
+          id?: string
+          metadata?: Json | null
+          points_spent?: number
+          redemption_notes?: string | null
+          review_notes?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          reward_id?: string
+          status?: string
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "reward_redemptions_reward_id_fkey"
+            columns: ["reward_id"]
+            isOneToOne: false
+            referencedRelation: "rewards"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      rewards: {
+        Row: {
+          availability: string
+          category: string
+          created_at: string | null
+          created_by: string
+          description: string
+          expiry_date: string | null
+          id: string
+          image_url: string | null
+          metadata: Json | null
+          organization_id: string | null
+          points_cost: number
+          quantity_available: number | null
+          quantity_claimed: number | null
+          status: string
+          title: string
+          type: string
+          updated_at: string | null
+          value: string
+        }
+        Insert: {
+          availability: string
+          category: string
+          created_at?: string | null
+          created_by: string
+          description: string
+          expiry_date?: string | null
+          id?: string
+          image_url?: string | null
+          metadata?: Json | null
+          organization_id?: string | null
+          points_cost: number
+          quantity_available?: number | null
+          quantity_claimed?: number | null
+          status?: string
+          title: string
+          type: string
+          updated_at?: string | null
+          value: string
+        }
+        Update: {
+          availability?: string
+          category?: string
+          created_at?: string | null
+          created_by?: string
+          description?: string
+          expiry_date?: string | null
+          id?: string
+          image_url?: string | null
+          metadata?: Json | null
+          organization_id?: string | null
+          points_cost?: number
+          quantity_available?: number | null
+          quantity_claimed?: number | null
+          status?: string
+          title?: string
+          type?: string
+          updated_at?: string | null
+          value?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "rewards_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       user_roles: {
         Row: {
           created_at: string
@@ -580,12 +707,16 @@ export type Database = {
         Args: { p_agent_id: string; p_mission_id: string; p_action: string }
         Returns: string
       }
+      check_user_points_for_redemption: {
+        Args: { p_user_id: string; p_points_cost: number }
+        Returns: boolean
+      }
       complete_mission_submission: {
         Args: {
           p_submission_id: string
           p_reviewed_by?: string
-          p_review_score?: number
           p_review_notes?: string
+          p_review_score?: number
         }
         Returns: undefined
       }
@@ -605,6 +736,14 @@ export type Database = {
           created_at: string
         }[]
       }
+      get_user_available_points: {
+        Args: { p_user_id: string }
+        Returns: number
+      }
+      redeem_reward: {
+        Args: { p_reward_id: string; p_redemption_notes?: string }
+        Returns: string
+      }
       reject_organization_privileges: {
         Args: {
           target_organization_id: string
@@ -612,6 +751,14 @@ export type Database = {
           rejection_reason?: string
         }
         Returns: Json
+      }
+      review_redemption: {
+        Args: {
+          p_redemption_id: string
+          p_status: string
+          p_review_notes?: string
+        }
+        Returns: boolean
       }
     }
     Enums: {
