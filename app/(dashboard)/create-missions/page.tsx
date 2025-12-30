@@ -41,8 +41,9 @@ import { useRouter } from "next/navigation";
 const evidenceTypes = [
   { value: "photo", label: "Photo" },
   { value: "video", label: "Video" },
+  { value: "document", label: "Document/File" },
+  { value: "audio", label: "Audio Recording" },
   { value: "text", label: "Text Input" },
-  { value: "gps", label: "GPS Location" },
   { value: "none", label: "None (Attendance Only)" },
 ];
 
@@ -659,11 +660,14 @@ export default function CreateMissionsPage() {
               <Label>Mission Thumbnail/Banner Image</Label>
               <FileUploadZone
                 onFilesChange={(files) => setThumbnailFiles(files)}
-                acceptedTypes={["image/*"]}
+                acceptedTypes={["image/png", "image/jpeg", "image/jpg", "image/webp"]}
                 maxFiles={1}
                 maxSizeMB={5}
                 className="mt-2"
               />
+              <p className="text-xs text-gray-500 mt-1">
+                Supported formats: PNG, JPG, JPEG, WebP (Max 5MB)
+              </p>
             </div>
           </div>
 
